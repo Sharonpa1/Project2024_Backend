@@ -1,0 +1,36 @@
+###
+
+GET http://localhost:3000/student
+
+###
+
+GET http://localhost:3000/student?name=John3
+
+###
+
+GET http://localhost:3000/student/02221233022
+
+
+###
+
+POST http://localhost:3000/student
+Content-Type: application/json
+
+{
+    "name": "sharon",
+    "age": 23,
+    "_id": "123456789"
+}
+
+###
+
+PUT http://localhost:3000/student
+
+
+###
+
+DELETE http://localhost:3000/student
+
+###
+
+GET http://localhost:3000/post

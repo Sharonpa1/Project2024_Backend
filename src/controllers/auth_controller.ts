@@ -15,7 +15,7 @@ const register = async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({ email: email });
         if (user) {
-            return res.status(400).send("user already exists");
+            return res.status(401).send("user already exists");
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -28,7 +28,7 @@ const register = async (req: Request, res: Response) => {
         return res.status(200).send(newUser);
     } catch (error) {
         console.log(error);
-        return res.status(400).send(error.message);
+        return res.status(500).send(error.message);
     }
 }
 
@@ -64,12 +64,12 @@ const login = async (req: Request, res: Response) => {
         const user = await User.findOne({ email: email });
 
         if (user == null) {
-            return res.status(400).send("invalid email or password");
+            return res.status(401).send("invalid email or password");
         }
 
         const valid = await bcrypt.compare(password, user.password);
         if (!valid) {
-            return res.status(400).send("invalid email or password");
+            return res.status(401).send("invalid email or password");
         }
 
         const { accessToken, refreshToken } = generateTokens(user._id.toString());
@@ -86,7 +86,7 @@ const login = async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(400).send(error.message);
+        return res.status(500).send(error.message);
     }
 }
 

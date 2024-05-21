@@ -5,10 +5,11 @@ import jwt from "jsonwebtoken";
 
 const register = async (req: Request, res: Response) => {
     console.log(req.body);
+    const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
 
-    if (email == null || password == null) {
+    if (name == null || email == null || password == null) {
         return res.status(400).send("missing email or password");
     }
 
@@ -21,6 +22,7 @@ const register = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = await User.create({
+            name: name,
             email: email,
             password: hashedPassword
         });
@@ -81,6 +83,7 @@ const login = async (req: Request, res: Response) => {
         }
         await user.save();
         return res.status(200).send({
+            user: user,
             accessToken: accessToken,
             refreshToken: refreshToken
         });

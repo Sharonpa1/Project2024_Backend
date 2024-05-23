@@ -19,7 +19,11 @@ router.post("/newPost", postController.newPost);
 
 router.get("/getAllPosts", postController.getAllPosts);
 
-router.get("/getPostsByUser");
+router.get("/getPostsByUserId/:id", postController.getPostsByUser);
+
+router.put("/editPost", postController.editPost);
+
+router.put("/deletePost", postController.deletePost);
 
 router.get("/");
 

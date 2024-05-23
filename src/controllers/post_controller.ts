@@ -38,6 +38,69 @@ const getAllPosts = async (req: Request, res: Response) => {
     }
 }
 
+const getPostsByUser = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        console.log("get posts by user req");
+        const postsList = await Post.find({owner : id});
+        return res.status(200).send(postsList);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send(error.message);
+    }
+}
+
+const editPost = async (req: Request, res: Response) => {
+    const id = req.body.id;
+    const owner = req.body.owner;
+    const title = req.body.subject;
+    const content = req.body.content;
+    
+    if (!owner || !title || !content) {
+      return res.status(400).json({ message: 'Subject and content are required' });
+    }
+  
+    try {
+      const post = await Post.findByIdAndUpdate(
+        id,
+        { title, content },
+        { new: true, runValidators: true }
+      );
+
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      res.status(200).json(post);
+    } catch (error) {
+      res.status(500).json({ message: 'Error updating post', error: error.message });
+    }
+}
+
+const deletePost = async (req: Request, res: Response) => {
+    const id = req.body.id;
+    console.log(id);
+    if (!id) {
+      return res.status(400).json({ message: 'Subject and content are required' });
+    }
+  
+    try {
+      const post = await Post.findByIdAndDelete(id);
+
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      res.status(200).json(post);
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting post', error: error.message });
+    }
+}
+
+
+
+
 // class PostController extends BaseController<IPost> {
 //     constructor() {
 //         super(Post);
@@ -53,5 +116,8 @@ const getAllPosts = async (req: Request, res: Response) => {
 
 export default {
     newPost,
-    getAllPosts
+    getAllPosts,
+    getPostsByUser,
+    editPost,
+    deletePost
 };

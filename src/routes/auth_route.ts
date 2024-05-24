@@ -81,6 +81,24 @@ router.post("/register", authController.register);
 
 /**
 * @swagger
+* /auth/editDetails:
+*   post:
+*     summary: edit existing user details
+*     tags: [Auth]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/User'
+*     responses:
+*       200:
+*         description: The updated user
+*/
+router.put("/editDetails", authController.editDetails);
+
+/**
+* @swagger
 * /auth/login:
 *   post:
 *     summary: login existing user by email and password

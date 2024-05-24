@@ -52,6 +52,39 @@ const generateTokens = (userId: string): { accessToken: string, refreshToken: st
         refreshToken: refreshToken
     }
 }
+
+const editDetails = async (req: Request, res: Response) => {
+    console.log("updateDetails");
+
+    const id = req.body.id;
+    const name = req.body.name;
+    const password = req.body.password;
+    
+    if (name == null || password == null) {
+        return res.status(400).send("missing name or password");
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const user = await User.findByIdAndUpdate(
+            id,
+            { name, password: hashedPassword },
+            { new: true, runValidators: true }
+          );
+
+        if (user == null) {
+            return res.status(401).send("invalid name or password");
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send(error.message);
+    }
+}
+
 const login = async (req: Request, res: Response) => {
     console.log("login");
 
@@ -146,5 +179,6 @@ export default {
     register,
     login,
     logout,
-    refresh
+    refresh,
+    editDetails
 }

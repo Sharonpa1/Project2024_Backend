@@ -81,9 +81,9 @@ router.post("/register", authController.register);
 
 /**
 * @swagger
-* /auth/editDetails:
+* /auth/editName:
 *   post:
-*     summary: edit existing user details
+*     summary: edit existing user name
 *     tags: [Auth]
 *     requestBody:
 *       required: true
@@ -95,7 +95,26 @@ router.post("/register", authController.register);
 *       200:
 *         description: The updated user
 */
-router.put("/editDetails", authController.editDetails);
+router.put("/editName", authController.editName);
+
+/**
+* @swagger
+* /auth/editPassword:
+*   post:
+*     summary: edit existing user password
+*     tags: [Auth]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/User'
+*     responses:
+*       200:
+*         description: The updated user
+*/
+router.put("/editPassword", authController.editPassword);
+
 
 /**
 * @swagger

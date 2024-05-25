@@ -9,6 +9,7 @@ let app: Express;
 
 
 const testUser = {
+    name: "test",
     email: "post@gmail.com",
     password: "123456",
     accessToken: null
@@ -32,9 +33,9 @@ afterAll(async () => {
 
 
 
-describe("Student", () => {
-    test("Get /post - empty collection", async () => {
-        const res = await request(app).get("/post");
+describe("Post test", () => {
+    test("get all posts", async () => {
+        const res = await request(app).get("/post/getAllPosts");
         expect(res.statusCode).toBe(200);
         const data = res.body;
         expect(data).toEqual([]);
@@ -42,15 +43,15 @@ describe("Student", () => {
 
     const post = {
         title: "this is post title",
-        message: "this is my post message ..... ",
+        content: "this is my post message ..... ",
         owner: "Moshe"
     }
 
-    test("Post /post - empty collection", async () => {
-        const res = await request(app).post("/post")
+    test("add new post", async () => {
+        const res = await request(app).post("/post/newPost")
             .set('Authorization', 'Bearer ' + testUser.accessToken)
-            .send(post);
-        expect(res.statusCode).toBe(201);
+            .send({user: testUser, subject: post.title, content: post.content});
+        expect(res.statusCode).toBe(200);
     });
 
 });

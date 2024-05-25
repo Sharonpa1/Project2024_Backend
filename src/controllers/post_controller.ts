@@ -1,4 +1,3 @@
-// import BaseController from "./base_controller";
 import Post from "../models/post_model";
 import { Request, Response } from "express";
 
@@ -53,11 +52,10 @@ const getPostsByUser = async (req: Request, res: Response) => {
 
 const editPost = async (req: Request, res: Response) => {
     const id = req.body.id;
-    const owner = req.body.owner;
     const title = req.body.subject;
     const content = req.body.content;
     
-    if (!owner || !title || !content) {
+    if (!title || !content) {
       return res.status(400).json({ message: 'Subject and content are required' });
     }
   
@@ -98,21 +96,6 @@ const deletePost = async (req: Request, res: Response) => {
     }
 }
 
-
-
-
-// class PostController extends BaseController<IPost> {
-//     constructor() {
-//         super(Post);
-//     }
-
-//     async post(req: Request, res: Response) {
-//         req.body.owner = req.body.user._id;
-//         super.post(req, res);
-//     }
-
-
-// }
 
 export default {
     newPost,
